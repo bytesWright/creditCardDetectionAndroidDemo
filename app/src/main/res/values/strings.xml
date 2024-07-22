@@ -2,4 +2,7 @@
     <string name="app_name">tensorflowLiteTest</string>
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_main">MainActivity</string>
+
+    <string name="capturing_front">Front</string>
+    <string name="capturing_back">Back</string>
 </resources>

@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,7 +20,6 @@
         android:theme="@style/Theme.TensorflowLiteTest"
         tools:targetApi="31">
 
-
         <uses-native-library
             android:name="libOpenCL.so"
             android:required="false"/>
@@ -29,43 +29,23 @@
             android:required="false" />
 
         <activity
-            android:name=".detectionPreview.YoloV8Activity"
+            android:name=".detection_preview.YoloActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.TensorflowLiteTest">
         </activity>
 
         <activity
-            android:name=".detectionPreview.TestActivity"
+            android:name=".credit_card_detection.CreditCardDetectionActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.TensorflowLiteTest">
-        </activity>
 
-        <activity
-            android:name=".externalVM.ExternalActivity"
-            android:exported="true"
-            android:label="@string/title_activity_camera"
-            android:theme="@style/Theme.TensorflowLiteTest">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/title_activity_camera"
-            android:theme="@style/Theme.FullScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
 
     </application>
 

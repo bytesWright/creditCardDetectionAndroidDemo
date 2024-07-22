@@ -1,17 +1,17 @@
 package com.isdavid
 
+import com.isdavid.credit_card_detection.view_model.delegates.extractData
 import org.junit.Test
 
-import org.junit.Assert.*
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class ExampleUnitInternalActivity {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun testCreditCardNumberExtraction() {
+        val inputString = "here 1234 5678 1234 5678 01-21 123"
+        val result = extractData(inputString)
+
+        result.forEach { (label, matches) ->
+            println("$label: $matches")
+        }
     }
 }
+
