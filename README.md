@@ -22,7 +22,7 @@ At the top, there are two placeholders for the images of a credit card:
 
 ### Form Fields
 Below the images, there are several form fields for entering credit card details:
-- **Cardholder Name**
+- **Cardholder Name** (Field not captured).
 - **Card Number**
 - **Expiration Date (MM/YY)**
 - **CVV**
@@ -44,7 +44,7 @@ This project is licensed under the Apache License Version 2.0.
 We welcome contributions from the community. If you plan to use these components or modified versions in a product, research project, or any other initiative that adds value, please notify us. This helps us maintain a record of users and allows us to acknowledge your contributions on our website.
 
 ## Contact
-For any inquiries or further information, please contact us at bytesWright@isdavid.com.
+For any inquiries or further information, please contact us at [bytesWright@isdavid.com](mailto:bytesWright@isdavid.com).
 
 ---
 
