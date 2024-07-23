@@ -39,7 +39,7 @@ This project is licensed under the Apache License Version 2.0.
 We welcome contributions from the community. If you plan to use these components or modified versions in a product, research project, or any other initiative that adds value, please notify us. This helps us maintain a record of users and allows us to acknowledge your contributions on our website.
 
 ## Contact
-For any inquiries or further information, please contact us at [contact@yourdomain.com](mailto:contact@yourdomain.com).
+For any inquiries or further information, please contact us at bytesWright@isdavid.com.
 
 ---
 
