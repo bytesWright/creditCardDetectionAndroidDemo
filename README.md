@@ -6,7 +6,12 @@ This app is designed to demonstrate the process of capturing and processing cred
 
 The model, along with the dataset and tools used to create it, are freely available for download under the Apache License Version 2.0. You are welcome to modify and distribute these components as needed.
 
-We kindly request that you notify us if you plan to use these components or modified versions in a product, research project, or any other initiative that adds value. This helps us maintain a record of users and allows us to acknowledge their contributions on our website.
+We kindly request that you notify us if you plan to use these components or modified versions in a product, research project, or any other initiative that adds value. This helps us maintain a record of users and allows us to acknowledge their contributions on our website. Here are some useful links:
+
+- [Project site](http://localhost:3000/visionCardDocs/#/)
+- [Data set generator](https://github.com/bytesWright/creditCardDetectionDSG)
+- [Data set](https://huggingface.co/datasets/bytesWright/creditCardDetectionDS)
+- [Models](https://huggingface.co/bytesWright/creditCardDetection)
 
 ## Features
 
