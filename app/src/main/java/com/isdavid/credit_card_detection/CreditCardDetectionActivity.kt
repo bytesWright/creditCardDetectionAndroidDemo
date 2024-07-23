@@ -84,27 +84,29 @@ class CreditCardDetectionActivity : ComponentActivity() {
 //        startCamera()
     }
 
-    private fun startCamera() =
-        lifecycleScope.launch(Dispatchers.Main) {
-            viewModel.setCaptureMode(
-                CreditCardDetectionVMC.Mode.BOTH
-            )
+    private fun startCamera() = lifecycleScope.launch(Dispatchers.Main) {
+        viewModel.setCaptureMode(
+            CreditCardDetectionVMC.Mode.BOTH
+        )
 
-            val tflModelWrapper: TflModelWrapper = viewModel.tflModelWrapper
+        viewModel.clearValues()
 
-            this@CreditCardDetectionActivity.yoloVideoCapture = buildYoloCaptureWrapper(
-                baseContext,
-                tflModelWrapper,
-                generalCameraTask.handler,
-                onFirstCapture = { cameraReady.value = true },
-                buildSurface = {
-                    runBlocking {
-                        previewSurface.setAspectRatio(it)
-                        previewSurface.retrieveSurface()
-                    }
+
+        val tflModelWrapper: TflModelWrapper = viewModel.tflModelWrapper
+
+        this@CreditCardDetectionActivity.yoloVideoCapture = buildYoloCaptureWrapper(
+            baseContext,
+            tflModelWrapper,
+            generalCameraTask.handler,
+            onFirstCapture = { cameraReady.value = true },
+            buildSurface = {
+                runBlocking {
+                    previewSurface.setAspectRatio(it)
+                    previewSurface.retrieveSurface()
                 }
-            )
-        }
+            }
+        )
+    }
 
     private fun stopCamera() {
         this.yoloVideoCapture?.close()

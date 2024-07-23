@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.isdavid.R
 import com.isdavid.credit_card_detection.view_model.CreditCardDetectionVMC
 import com.isdavid.credit_card_detection.view_model.CreditCardDetectionVMC.Mode
-import com.isdavid.credit_card_detection.view_model.CreditCardDetectionVMC.Side
+import com.isdavid.credit_card_detection.view_model.CardSide
 import kotlin.math.sin
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -47,12 +47,12 @@ fun InstructionsLayer(
     viewModel: CreditCardDetectionVMC,
     viewLog: Boolean = false
 ) {
-    val shouldShowOkAnimation = viewModel.capturingSide.value == Side.BACK &&
+    val shouldShowOkAnimation = viewModel.capturingCardSide.value == CardSide.BACK &&
             viewModel.captureMode.value == Mode.BOTH
 
     val okAnimation: Float by animateFloatAsState(
         targetValue = if (shouldShowOkAnimation) 1f else 0f,
-        animationSpec = tween(durationMillis = 3000),
+        animationSpec = tween(durationMillis = 1500),
         label = "captureInstructions"
     )
 
@@ -76,7 +76,7 @@ fun InstructionsLayer(
                     modifier = Modifier
                         .align(Alignment.Center),
                     targetState = stringResource(
-                        id = viewModel.capturingSide.value.captureStepInstructions
+                        id = viewModel.capturingCardSide.value.captureStepInstructions
                     ),
                     transitionSpec = {
                         fadeIn(animationSpec = tween(500)) with fadeOut(animationSpec = tween(500))
@@ -92,7 +92,7 @@ fun InstructionsLayer(
             }
 
             DrawableImage(
-                resource = if (viewModel.capturingSide.value == Side.BACK)
+                resource = if (viewModel.capturingCardSide.value == CardSide.BACK)
                     R.drawable.back else R.drawable.front,
 
                 modifier = Modifier

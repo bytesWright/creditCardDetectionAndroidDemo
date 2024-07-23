@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import com.google.mlkit.vision.text.Text
 import com.isdavid.common.coroutines.CoroutineHolderC
+import com.isdavid.credit_card_detection.view_model.CardSide
 import com.isdavid.detection_preview.view_model.YoloVMD
 import com.isdavid.detection_preview.view_model.YoloVMDC
 import com.isdavid.machine_vision.BitmapOperations
@@ -21,7 +22,8 @@ class CaptureSideVMD(
     context: Context,
     private val yoloVMD: YoloVMD = YoloVMD(context)
 ) : YoloVMDC by yoloVMD, CoroutineHolderC by yoloVMD {
-    var onSideDetected: ((detected: Bitmap, extractedText: ExtractedPhrases) -> Unit)? = null
+
+    var onSideDetected: ((detected: Bitmap, cardSide: CardSide, extractedText: ExtractedPhrases) -> Unit)? = null
 
     private var firstDetectionTime: Long = -1
     private var timeInFrame: Long = -1
@@ -42,18 +44,20 @@ class CaptureSideVMD(
         if (cameraStatus?.inFocus != true) return
         yoloVMD.updateBoxes(boundingBoxes)
 
-        val creditCardBBox = boundingBoxes.find {
-            it.classId == 0
+        val creditCardSideBBox = boundingBoxes.find {
+            it.classId == 0 || it.classId == 1
         }
 
-        if (creditCardBBox == null) {
+        if (creditCardSideBBox == null) {
             sourceImage.recycle()
+
             firstDetectionTime = -1
             timeInFrame = -1
             return
         }
 
         val currentTime: Long = System.currentTimeMillis()
+
         if (firstDetectionTime < 0) {
             firstDetectionTime = currentTime
             return
@@ -67,7 +71,7 @@ class CaptureSideVMD(
         localScope.launch(Dispatchers.Default) {
             parseImage(
                 sourceImage,
-                creditCardBBox,
+                creditCardSideBBox,
                 controlRemote
             )
         }
@@ -84,6 +88,8 @@ class CaptureSideVMD(
             creditCardBBox
         )
 
+        val cardSide = CardSide.build(creditCardBBox.classId)
+
         val text: Text = ocrWrapper.run(crop)
 
         val dataMaps = text.textBlocks.map {
@@ -92,7 +98,7 @@ class CaptureSideVMD(
 
         val consolidatedValues = consolidateMaps(dataMaps)
 
-        onSideDetected?.invoke(crop, consolidatedValues)
+        onSideDetected?.invoke(crop, cardSide, consolidatedValues)
         controlRemote.resume()
     }
 }

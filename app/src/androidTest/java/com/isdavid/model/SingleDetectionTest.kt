@@ -27,8 +27,8 @@ class SingleDetectionTest {
     private lateinit var yoloV8ModelWrapper: TflModelWrapper
 
     private val config = object {
-        val modulePath = "yoloV8/model16.tflite"
-        val labelsPath = "yoloV8/labels.txt"
+        val modulePath = "ccod/v0.1/model-float-16.tflite"
+        val labelsPath = "ccod/v0.1/labels.txt"
     }
 
     @Before

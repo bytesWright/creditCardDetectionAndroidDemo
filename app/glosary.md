@@ -1,7 +1,7 @@
 Abbreviations
 
 C: Contract
-VMF: View Model Factor
+VMF: View Model Factory
 
 VMC: View Model Contract
 VM: View Model

@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.isdavid.common.handlers.LoopHandlerWrapper
 import com.isdavid.detection_preview.compose.YoloCompose
-import com.isdavid.detection_preview.compose.YoloLogPreview
 import com.isdavid.log.Logger
 import com.isdavid.machine_vision.camera.PlaneShape
 import com.isdavid.machine_vision.yolo.YoloVideoCapture
