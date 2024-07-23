@@ -53,15 +53,10 @@ class TextClassificationTest {
             val text = classification.text
             result.append("$text, Entity: $entityType, Confidence: $confidenceScore\n")
         }
-
-        Log.d("DXXD", result.toString())
-
-
     }
 
     @Test
     fun testClassifier() {
-        Log.d("DXXD", ">>>>")
         val result = classifyText("James Smith")
         displayClassificationResults(result)
     }

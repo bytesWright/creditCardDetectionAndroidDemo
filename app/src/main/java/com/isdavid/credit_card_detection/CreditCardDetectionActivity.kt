@@ -28,7 +28,6 @@ import com.isdavid.ui.theme.TensorflowLiteTestTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.opencv.android.OpenCVLoader
 
 class CreditCardDetectionActivity : ComponentActivity() {
     private val generalCameraTask = LoopHandlerWrapper("generalCameraTask")
@@ -41,11 +40,6 @@ class CreditCardDetectionActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!OpenCVLoader.initDebug())
-            Log.e("OpenCV", "Unable to load OpenCV!");
-        else
-            Log.d("OpenCV", "OpenCV loaded Successfully!");
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         viewModel.stopCamera = ::stopCamera

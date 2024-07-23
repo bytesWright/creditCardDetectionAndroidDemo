@@ -29,8 +29,8 @@ class MultipleDetectionsTest {
     private val log = buildQuickLogger("MDT") //model detection test
 
     private val config = object {
-        val modulePath = "ccod/v0.1/model-float-16.tflite"
-        val labelsPath = "ccod/v0.1/labels.txt"
+        val modulePath = "ccod/v0.3/model-float-16.tflite"
+        val labelsPath = "ccod/v0.3/labels.txt"
     }
 
     @Before
