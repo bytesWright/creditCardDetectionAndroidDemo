@@ -1,30 +1,30 @@
 package com.isdavid.machine_vision.yolo.model_wrapper
 
 import android.graphics.Bitmap
-import android.service.autofill.ImageTransformation
 import com.isdavid.log.Logger
+import com.isdavid.machine_vision.BitmapOperations
 import com.isdavid.machine_vision.camera.PlaneShape
 import com.isdavid.machine_vision.camera.from
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBoxes
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBoxes
 import com.isdavid.machine_vision.yolo.boundingBox.computeBoundingBoxesX
 import com.isdavid.machine_vision.yolo.boundingBox.filterWithNms
 import com.isdavid.machine_vision.yolo.bundles.CameraStatus
 import com.isdavid.machine_vision.yolo.model_wrapper.tensorflow.TensorProperties
 import com.isdavid.machine_vision.yolo.model_wrapper.tensorflow.prepareInterpreterInput
 import com.isdavid.machine_vision.yolo.model_wrapper.tensorflow.prepareOutput
+import java.nio.MappedByteBuffer
+import kotlin.time.Duration
+import kotlin.time.measureTimedValue
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.gpu.GpuDelegate
 import org.tensorflow.lite.support.common.ops.CastOp
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
-import java.nio.MappedByteBuffer
-import kotlin.time.Duration
-import kotlin.time.measureTimedValue
 
 typealias YoloOnDetect = (
     sourceBitmap: Bitmap,
-    boundingBoxes: BoundingBoxes,
+    detectionBoundingBoxes: DetectionBoundingBoxes,
     cameraStatus: CameraStatus?,
     controlRemote: TflModelRemoteControl,
     executionTime: Duration,
@@ -93,17 +93,26 @@ class TflModelWrapper(
         }
     }
 
-    fun detect(inputBitmap: Bitmap, cameraStatus: CameraStatus? = null): BoundingBoxes {
+    fun detect(inputBitmap: Bitmap, cameraStatus: CameraStatus? = null): DetectionBoundingBoxes {
         if (_paused || _closed) {
             log.line(4, message = "Ignoring input. I'm on pause or closed.")
             return emptyList()
         }
 
-        onLogImage(inputBitmap)
+        val width = inputBitmap.width
+        val height = inputBitmap.height
+
+        val reshapedImage = BitmapOperations.cropFromCenter(
+            inputBitmap,
+            width / 2, height / 2,
+            tensorProperties.width * 4, tensorProperties.height * 4
+        )
+
+        onLogImage(reshapedImage)
 
         val (result, executionTime) = measureTimedValue {
             val (reshape, imageBuffer) = prepareInterpreterInput(
-                inputBitmap,
+                reshapedImage,
                 tensorProperties,
                 imageProcessor
             )
@@ -150,13 +159,14 @@ class TflModelWrapper(
         log.line(5, message = "Executed detection boundingBoxes ${boundingBoxes.size}")
 
         onDetect?.invoke(
-            inputBitmap,
+            reshapedImage,
             boundingBoxes,
             cameraStatus,
             controlRemote,
             executionTime,
         )
 
+        inputBitmap.recycle()
         return boundingBoxes
     }
 
@@ -182,8 +192,11 @@ class TflModelWrapper(
 
 
 class TflModelRemoteControl(private val tflModelWrapper: TflModelWrapper) {
-    val paused = tflModelWrapper.paused
-    val closed = tflModelWrapper.closed
+    val paused
+        get() = tflModelWrapper.paused
+    val closed
+        get() = tflModelWrapper.closed
+
     fun pause() = tflModelWrapper.pause()
     fun resume() = tflModelWrapper.resume()
     fun close() = tflModelWrapper.pause()

@@ -4,8 +4,8 @@ import com.isdavid.machine_vision.yolo.model_wrapper.tensorflow.TensorProperties
 
 fun computeBoundingBoxesX(
     tensorOutput: FloatArray, tp: TensorProperties, confidenceThreshold: Float = .3F, labels: List<String>
-): BoundingBoxes {
-    val boundingBoxes = mutableListOf<BoundingBox>()
+): DetectionBoundingBoxes {
+    val detectionBoundingBoxes = mutableListOf<DetectionBoundingBox>()
 
     for (c in 0 until tp.predictionsLimit) {
         var confidence = -1.0f
@@ -40,8 +40,8 @@ fun computeBoundingBoxesX(
             if (x2 < 0F || x2 > 1F) continue
             if (y2 < 0F || y2 > 1F) continue
 
-            boundingBoxes.add(
-                BoundingBox(
+            detectionBoundingBoxes.add(
+                DetectionBoundingBox(
                     x1 = x1,
                     y1 = y1,
                     x2 = x2,
@@ -58,14 +58,14 @@ fun computeBoundingBoxesX(
         }
     }
 
-    return boundingBoxes
+    return detectionBoundingBoxes
 }
 
 
 fun computeBoundingBoxes(
     tensorOutput: FloatArray, tp: TensorProperties, confidenceThreshold: Float = .3F, labels: List<String>
-): BoundingBoxes {
-    val boundingBoxes = mutableListOf<BoundingBox>()
+): DetectionBoundingBoxes {
+    val detectionBoundingBoxes = mutableListOf<DetectionBoundingBox>()
 
     for (c in 0 until tp.predictionsLimit) {
         val predictionPointer = c * tp.dataBundleSize
@@ -78,11 +78,11 @@ fun computeBoundingBoxes(
 
         if (confidence > confidenceThreshold) {
             val boundingBox = buildBoundingBox(tensorOutput, predictionPointer, confidence, classId, labels) ?: continue
-            boundingBoxes.add(boundingBox)
+            detectionBoundingBoxes.add(boundingBox)
         }
     }
 
-    return boundingBoxes
+    return detectionBoundingBoxes
 }
 
 private fun buildBoundingBox(
@@ -91,7 +91,7 @@ private fun buildBoundingBox(
     confidence: Float,
     classId: Int,
     labels: List<String>,
-): BoundingBox? {
+): DetectionBoundingBox? {
     val cx = tensorOutput[predictionPointer]
     val cy = tensorOutput[predictionPointer + 1]
     val w = tensorOutput[predictionPointer + 2]
@@ -107,7 +107,7 @@ private fun buildBoundingBox(
     if (x2 < 0F || x2 > 1F) return null
     if (y2 < 0F || y2 > 1F) return null
 
-    return BoundingBox(
+    return DetectionBoundingBox(
         x1 = x1,
         y1 = y1,
         x2 = x2,

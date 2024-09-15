@@ -39,7 +39,7 @@ fun CreditCardDetectionCompose(
 
     Box(modifier = modifier) {
         CameraPreviewBox(
-            boundingBoxes = viewModel.boundingBoxes.value,
+            detectionBoundingBoxes = viewModel.detectionBoundingBoxes.value,
             surfaceView = surfaceView
         )
 

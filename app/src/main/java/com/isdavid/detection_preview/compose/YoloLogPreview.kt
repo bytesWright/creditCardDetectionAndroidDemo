@@ -9,15 +9,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBoxes
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBoxes
 import com.isdavid.machine_vision.yolo.views.AspectRatioKeeperTextureView
-import com.isdavid.machine_vision.yolo.views.YoloLogOverLayView
+import com.isdavid.machine_vision.yolo.views.YoloLogOverlayView
 
 @Composable
 fun YoloLogPreview(
     surfaceView: AspectRatioKeeperTextureView,
     modifier: Modifier = Modifier,
-    boundingBoxes: BoundingBoxes
+    detectionBoundingBoxes: DetectionBoundingBoxes
 ) {
     val context = LocalContext.current
 
@@ -33,11 +33,11 @@ fun YoloLogPreview(
         )
         AndroidView(
             factory = {
-                YoloLogOverLayView(context)
+                YoloLogOverlayView(context)
             },
             update = {
                 it.setAspectRatio(surfaceView.shape)
-                it.results = boundingBoxes
+                it.results = detectionBoundingBoxes
             },
             modifier = Modifier
                 .align(Alignment.Center)

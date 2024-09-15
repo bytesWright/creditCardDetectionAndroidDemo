@@ -9,10 +9,11 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.YuvImage
 import android.media.Image
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBox
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBox
 import java.io.ByteArrayOutputStream
 import java.nio.ReadOnlyBufferException
 import kotlin.experimental.inv
+import kotlin.math.max
 import kotlin.math.min
 
 
@@ -225,17 +226,50 @@ class BitmapOperations {
             return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
         }
 
-        fun crop(source: Bitmap, boundingBox: BoundingBox): Bitmap {
-            val left = (source.width.toFloat() * boundingBox.x1).toInt()
-            val right = (source.width.toFloat() * boundingBox.x2).toInt()
+        fun crop(source: Bitmap, detectionBoundingBox: DetectionBoundingBox): Bitmap {
+            val left = (source.width.toFloat() * detectionBoundingBox.x1).toInt()
+            val right = (source.width.toFloat() * detectionBoundingBox.x2).toInt()
 
-            val top = (source.height.toFloat() * boundingBox.y1).toInt()
-            val bottom = (source.height.toFloat() * boundingBox.y2).toInt()
+            val top = (source.height.toFloat() * detectionBoundingBox.y1).toInt()
+            val bottom = (source.height.toFloat() * detectionBoundingBox.y2).toInt()
 
             val width = min(right, source.width) - left
             val height = min(bottom, source.height) - top
 
             return Bitmap.createBitmap(source, left, top, width, height)
+        }
+
+        fun crop(source: Bitmap, x1: Int, y1: Int, x2: Int, y2: Int): Bitmap {
+            // Ensure the coordinates are in the correct order
+            val left = min(x1, x2).coerceIn(0, source.width)
+            val top = min(y1, y2).coerceIn(0, source.height)
+            val right = max(x1, x2).coerceIn(0, source.width)
+            val bottom = max(y1, y2).coerceIn(0, source.height)
+
+            // Calculate the width and height of the cropped area
+            val width = right - left
+            val height = bottom - top
+
+            // Create and return the cropped bitmap
+            return Bitmap.createBitmap(source, left, top, width, height)
+        }
+
+        fun cropFromCenter(source: Bitmap, centerX: Int, centerY: Int, cropWidth: Int, cropHeight: Int): Bitmap {
+            // Calculate the left, top, right, and bottom edges of the crop area
+            val halfWidth = cropWidth / 2
+            val halfHeight = cropHeight / 2
+
+            val left = (centerX - halfWidth).coerceIn(0, source.width)
+            val top = (centerY - halfHeight).coerceIn(0, source.height)
+            val right = (centerX + halfWidth).coerceIn(0, source.width)
+            val bottom = (centerY + halfHeight).coerceIn(0, source.height)
+
+            // Calculate the width and height of the cropped area (may be smaller than requested if out of bounds)
+            val finalWidth = right - left
+            val finalHeight = bottom - top
+
+            // Create and return the cropped bitmap
+            return Bitmap.createBitmap(source, left, top, finalWidth, finalHeight)
         }
 
         /**

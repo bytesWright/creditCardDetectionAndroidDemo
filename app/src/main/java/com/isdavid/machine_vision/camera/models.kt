@@ -25,6 +25,7 @@ data class FormatData(
     val name: String, val resolutions: List<PlaneShape>
 )
 
+
 data class PlaneShape(
     val width: Int,
     val height: Int,

@@ -1,6 +1,7 @@
 package com.isdavid.machine_vision.yolo.model_wrapper.tensorflow
 
 import android.graphics.Bitmap
+import com.isdavid.machine_vision.BitmapOperations
 import com.isdavid.machine_vision.camera.PlaneShape
 import com.isdavid.machine_vision.camera.from
 import java.nio.ByteBuffer
@@ -10,6 +11,8 @@ import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 
 fun prepareInterpreterInput(cameraFrame: Bitmap, tensorProperties: TensorProperties, imageProcessor: ImageProcessor): Pair<PlaneShape, ByteBuffer> {
+
+
     val resizedBitmap = Bitmap.createScaledBitmap(
         cameraFrame, tensorProperties.width, tensorProperties.height, false
     )
@@ -22,6 +25,7 @@ fun prepareInterpreterInput(cameraFrame: Bitmap, tensorProperties: TensorPropert
 
     val shape = PlaneShape.from(resizedBitmap)
     resizedBitmap.recycle()
+
     return Pair(shape, imageBuffer)
 }
 

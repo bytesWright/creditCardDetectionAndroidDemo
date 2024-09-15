@@ -90,7 +90,7 @@ class YoloActivity : ComponentActivity() {
                         startCamera = { startCamera() },
                         stopCamera = { stopCamera() },
                         cameraReady = cameraReady.value,
-                        boundingBoxes = viewModel.boundingBoxes.value,
+                        detectionBoundingBoxes = viewModel.detectionBoundingBoxes.value,
                         logImage = viewModel.imageLog.value
                     )
                 }

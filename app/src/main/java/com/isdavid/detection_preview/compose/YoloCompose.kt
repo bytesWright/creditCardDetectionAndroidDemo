@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
@@ -26,14 +25,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBoxes
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBoxes
 import com.isdavid.machine_vision.yolo.views.AspectRatioKeeperTextureView
 import kotlin.math.max
 
 @Composable
 fun YoloCompose(
     surfaceView: AspectRatioKeeperTextureView,
-    boundingBoxes: BoundingBoxes,
+    detectionBoundingBoxes: DetectionBoundingBoxes,
     startCamera: () -> Unit,
     stopCamera: () -> Unit,
     cameraReady: Boolean,
@@ -52,7 +51,7 @@ fun YoloCompose(
     Box(modifier = modifier.fillMaxSize()) {
         YoloLogPreview(
             surfaceView = surfaceView,
-            boundingBoxes = boundingBoxes
+            detectionBoundingBoxes = detectionBoundingBoxes
         )
 
         BottomButtons(startCamera, stopCamera)

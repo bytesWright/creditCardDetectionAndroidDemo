@@ -1,8 +1,8 @@
 package com.isdavid.machine_vision.yolo.boundingBox
 
-fun filterWithNms(boxes: BoundingBoxes, iouThreshold: Float = .5F): MutableBoundingBoxes {
+fun filterWithNms(boxes: DetectionBoundingBoxes, iouThreshold: Float = .5F): MutableBoundingBoxes {
     val sortedBoxes = boxes.sortedByDescending { it.confidence }.toMutableList()
-    val selectedBoxes = mutableListOf<BoundingBox>()
+    val selectedBoxes = mutableListOf<DetectionBoundingBox>()
 
     while (sortedBoxes.isNotEmpty()) {
         val first = sortedBoxes.first()
@@ -22,7 +22,7 @@ fun filterWithNms(boxes: BoundingBoxes, iouThreshold: Float = .5F): MutableBound
     return selectedBoxes
 }
 
-fun calculateIoU(box1: BoundingBox, box2: BoundingBox): Float {
+fun calculateIoU(box1: DetectionBoundingBox, box2: DetectionBoundingBox): Float {
     val x1 = maxOf(box1.x1, box2.x1)
     val y1 = maxOf(box1.y1, box2.y1)
     val x2 = minOf(box1.x2, box2.x2)

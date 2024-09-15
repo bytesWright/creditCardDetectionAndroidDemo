@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBoxes
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBoxes
 import com.isdavid.machine_vision.yolo.views.YoloLogSurfaceView
 
 @Composable
 fun CameraPreviewBox(
     surfaceView: YoloLogSurfaceView,
-    boundingBoxes: BoundingBoxes,
+    detectionBoundingBoxes: DetectionBoundingBoxes,
     modifier: Modifier = Modifier,
     viewLog: Boolean = false
 ) {
@@ -22,7 +22,7 @@ fun CameraPreviewBox(
             factory = { surfaceView },
             update = {
                 if (viewLog) {
-                    it.results = boundingBoxes
+                    it.results = detectionBoundingBoxes
                     it.invalidate()
                 }
             }

@@ -29,6 +29,7 @@ suspend fun buildYoloCaptureWrapper(
     val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
     val cameraData = CameraData.queryDefaultCameraData(context)
+
     val sharedMaxResolution =
         cameraData.queryMaxSharedResolution(ImageFormat.JPEG, ImageFormat.YUV_420_888)
 

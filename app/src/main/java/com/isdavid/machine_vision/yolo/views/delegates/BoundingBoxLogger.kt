@@ -5,21 +5,20 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
-import android.util.Log
 import androidx.compose.ui.unit.dp
 import com.isdavid.machine_vision.camera.PlaneShape
 import com.isdavid.machine_vision.camera.invert
 import com.isdavid.machine_vision.camera.scaleTo
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBox
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBoxes
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBox
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBoxes
 
 interface BoundingBoxLoggerC {
-    var results: BoundingBoxes
+    var results: DetectionBoundingBoxes
     fun drawBoundingBoxes(canvas: Canvas, canvasShape: PlaneShape, sourceShape: PlaneShape?)
 }
 
 class BoundingBoxLogger : BoundingBoxLoggerC {
-    private var _results = listOf<BoundingBox>()
+    private var _results = listOf<DetectionBoundingBox>()
 
     private val boxPaint = Paint()
     private val strokeWidth = 10.dp.value
@@ -39,7 +38,7 @@ class BoundingBoxLogger : BoundingBoxLoggerC {
         xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
 
-    override var results: BoundingBoxes
+    override var results: DetectionBoundingBoxes
         get() = _results
         set(value) {
             _results = value
@@ -75,20 +74,20 @@ class BoundingBoxLogger : BoundingBoxLoggerC {
 
 
     private fun drawBoundingBox(
-        canvas: Canvas, boundingBox: BoundingBox,
+        canvas: Canvas, detectionBoundingBox: DetectionBoundingBox,
         canvasShape: PlaneShape,
         offset: Int
     ) {
 
         val (width, height) = canvasShape
 
-        val left = boundingBox.x1 * width - offset
-        val top = boundingBox.y1 * height
-        val right = boundingBox.x2 * width - offset
-        val bottom = boundingBox.y2 * height
+        val left = detectionBoundingBox.x1 * width - offset
+        val top = detectionBoundingBox.y1 * height
+        val right = detectionBoundingBox.x2 * width - offset
+        val bottom = detectionBoundingBox.y2 * height
 
         canvas.drawRect(left, top, right, bottom, boxPaint)
-        val title = boundingBox.className
+        val title = detectionBoundingBox.className
 
         textBackgroundPaint.getTextBounds(title, 0, title.length, bounds)
 

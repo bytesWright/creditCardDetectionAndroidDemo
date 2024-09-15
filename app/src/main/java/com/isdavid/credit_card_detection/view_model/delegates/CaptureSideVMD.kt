@@ -9,8 +9,8 @@ import com.isdavid.detection_preview.view_model.YoloVMD
 import com.isdavid.detection_preview.view_model.YoloVMDC
 import com.isdavid.machine_vision.BitmapOperations
 import com.isdavid.machine_vision.ocr.OcrWrapper
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBox
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBoxes
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBox
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBoxes
 import com.isdavid.machine_vision.yolo.bundles.CameraStatus
 import com.isdavid.machine_vision.yolo.model_wrapper.TflModelRemoteControl
 import kotlinx.coroutines.Dispatchers
@@ -36,15 +36,15 @@ class CaptureSideVMD(
 
     private fun onDetect(
         sourceImage: Bitmap,
-        boundingBoxes: BoundingBoxes,
+        detectionBoundingBoxes: DetectionBoundingBoxes,
         cameraStatus: CameraStatus?,
         controlRemote: TflModelRemoteControl,
         executionTime: Duration
     ) {
         if (cameraStatus?.inFocus != true) return
-        yoloVMD.updateBoxes(boundingBoxes)
+        yoloVMD.updateBoxes(detectionBoundingBoxes)
 
-        val creditCardSideBBox = boundingBoxes.find {
+        val creditCardSideBBox = detectionBoundingBoxes.find {
             it.classId == 0 || it.classId == 1
         }
 
@@ -79,7 +79,7 @@ class CaptureSideVMD(
 
     private fun parseImage(
         sourceImage: Bitmap,
-        creditCardBBox: BoundingBox,
+        creditCardBBox: DetectionBoundingBox,
         controlRemote: TflModelRemoteControl,
 
         ) {

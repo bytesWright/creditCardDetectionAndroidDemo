@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.SurfaceView
 import com.isdavid.log.Logger
 import com.isdavid.machine_vision.camera.PlaneShape
-import com.isdavid.machine_vision.yolo.boundingBox.BoundingBoxes
+import com.isdavid.machine_vision.yolo.boundingBox.DetectionBoundingBoxes
 import com.isdavid.machine_vision.yolo.views.delegates.AspectRationKeeper
 import com.isdavid.machine_vision.yolo.views.delegates.AspectRationKeeperC
 import com.isdavid.machine_vision.yolo.views.delegates.BoundingBoxLogger
@@ -27,7 +27,7 @@ class YoloLogSurfaceView @JvmOverloads constructor(
         setWillNotDraw(false)
     }
 
-    override var results: BoundingBoxes
+    override var results: DetectionBoundingBoxes
         get() = boundingBoxLogger.results
         set(value) {
             boundingBoxLogger.results = value
